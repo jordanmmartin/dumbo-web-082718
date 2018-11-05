@@ -1,3 +1,7 @@
+img {
+  width: 80%;
+}
+
 .App {
   text-align: center;
 }
@@ -29,4 +33,15 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.left-div {
+float: left;
+width: 50%;
+}
+
+
+.right-div {
+  float: right;
+  width: 50%;
 }

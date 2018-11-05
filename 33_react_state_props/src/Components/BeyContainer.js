@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import BeyCard from "./BeyCard";
 import BeyForm from "./BeyForm";
-import { BeyImages, JayImages } from "../images";
+// import { BeyImages, JayImages } from "../images";
 
 class BeyContainer extends Component {
   state = {
-    beyImages: BeyImages,
-    renderOrNah: true
+    renderOrNah: true,
+    filter: 'all',
+    objects: []
   };
 
   clickHandler = () => {
@@ -15,6 +16,7 @@ class BeyContainer extends Component {
       renderOrNah: !this.state.renderOrNah
     });
   };
+
 
   submitHandler = (e, obj) => {
     e.preventDefault();
@@ -27,19 +29,49 @@ class BeyContainer extends Component {
     });
   };
 
+  handleChange = (e) => {
+    let newState = ''
+    if (e.target.value === 'all') {
+      newState = 'all'
+    } else {
+      newState = 'favorite'
+    }
+    this.setState({
+      filter: newState
+    })
+  }
+
+  handleDelete = () => {
+    console.log('state', this.state.objects);
+    console.log('props', this.props.beyObjects);
+  }
+
+  componentDidMount() {
+    this.setState({
+      objects: this.props.beyObjects
+    })
+  }
+
   // beyCards() {
   //   return BeyImages.map(beyObj => <BeyCard />);
   // }
   render() {
-    let beyCards = this.state.beyImages.map(beyObj => (
+    let beyCards = this.props.beyObjects.map(beyObj => (
       <BeyCard
         key={beyObj.name}
         beyObj={beyObj}
         clickHandler={this.clickHandler}
+        handleFavorite={this.handleFavorite}
+        filter={this.state.filter}
+        handleDelete={this.handleDelete}
       />
     )); //[<BeyCard />, <BeyCard />, ...]
     return (
       <div>
+        <select defaultValue={this.state.filter} onChange={this.handleChange}>
+          <option value='all'>All</option>
+          <option value='favorite'>Favorite</option>
+        </select>
         <BeyForm submitHandler={this.submitHandler} />
         {this.state.renderOrNah ? (
           beyCards
